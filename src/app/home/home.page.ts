@@ -32,8 +32,18 @@ export class HomePage implements OnInit {
   }
 
   searchSongs() {
-    // Call your API to search songs based on the searchQuery
-    // Assign the response to this.songs array
+    const query = `?title=${this.searchTitle}&artist=${this.searchArtist}&date=${this.searchDate}`; // Construye la consulta con los parámetros
+    this.apiService.searchSongs(query).subscribe(response => {
+      this.songs = response as any[];
+      console.log(this.songs); // Aquí puedes realizar la lógica adicional que necesites con los datos de las canciones
+    });
+  }
+
+  cleanFilters() {
+    this.searchTitle = '';
+    this.searchArtist = '';
+    this.searchDate = '';
+    this.getAllSongs();
   }
 
   goToLogin() {}
