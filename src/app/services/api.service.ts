@@ -12,7 +12,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   async getSongs(): Promise<Song[]> {
-    let response = await fetch(`${this.apiUrl}/api/song`, {
+    let response = await fetch(`${this.apiUrl}/song`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export class ApiService {
   }
 
   async searchSongs(query: string): Promise<Song[]> {
-    let response = await fetch(`${this.apiUrl}/api/song/search${query}`, {
+    let response = await fetch(`${this.apiUrl}/song/search${query}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export class ApiService {
   }
 
   async postSong(song: Song): Promise<Song> {
-    let response = await fetch(`${this.apiUrl}/api/song`, {
+    let response = await fetch(`${this.apiUrl}/song`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
