@@ -9,7 +9,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "lint:json": "eslint --ext .ts src/ --format json -o coverage/eslint-result.json"
   },
   "private": true,
   "dependencies": {
