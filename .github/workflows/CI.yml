@@ -11,12 +11,10 @@ jobs:
   build-front:
     name: Build Front & Testing
     runs-on: ubuntu-latest
+    env:
+      API_URL: ${{ secrets.API_URL }}
     steps:
       - uses: actions/checkout@v3
-      - name: Create environment file
-        env:
-          ENVIRONMENT_FILE: ${{ secrets.ENVIRONMENT_FILE }}
-        run: echo "$ENVIRONMENT_FILE" > src/environments/environment.ts
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
