@@ -1,28 +1,44 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Song } from '../models/song.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'http://127.0.0.1:3000'; // Reemplaza con la URL de tu API
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  getSongs() {
-    const url = `${this.apiUrl}/api/song`;
-    return this.http.get(url);
+  async getSongs(): Promise<Song[]> {
+    let response = await fetch(`${this.apiUrl}/api/song`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
   }
 
-  postSong(data: any) {
-    const url = `${this.apiUrl}/api/song`;
-    return this.http.post(url, data);
+  async searchSongs(query: string): Promise<Song[]> {
+    let response = await fetch(`${this.apiUrl}/api/song/search${query}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
   }
 
-  searchSongs(query: string) {
-    const url = `${this.apiUrl}/api/song/search/${query}`;
-    return this.http.get(url);
+  async postSong(song: Song): Promise<Song> {
+    let response = await fetch(`${this.apiUrl}/api/song`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(song),
+    });
+    return await response.json();
   }
-
-  // Agrega otros métodos según tus necesidades
 }

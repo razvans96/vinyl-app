@@ -20,22 +20,27 @@ export class HomePage implements OnInit {
   }
 
   getAllSongs() {
-    this.apiService.getSongs().subscribe(
-      response => {
-        this.songs = response as any[];
-        console.log(this.songs); // Aquí puedes realizar la lógica adicional que necesites con los datos de las canciones
-      },
-      error => {
-        console.error('Error al obtener las canciones:', error);
-      }
-    );
+    this.apiService.getSongs().then((songs: Song[]) => {
+      this.songs = songs;
+      console.log(this.songs);
+    });
   }
 
   searchSongs() {
-    const query = `?title=${this.searchTitle}&artist=${this.searchArtist}&date=${this.searchDate}`; // Construye la consulta con los parámetros
-    this.apiService.searchSongs(query).subscribe(response => {
-      this.songs = response as any[];
-      console.log(this.songs); // Aquí puedes realizar la lógica adicional que necesites con los datos de las canciones
+    //check if the search fields are empty and if they are, don't add them to the query
+    let query = '?';
+    if (this.searchTitle != '') {
+      query += `title=${this.searchTitle}&`;
+    }
+    if (this.searchArtist != '') {
+      query += `artist=${this.searchArtist}&`;
+    }
+    if (this.searchDate != '') {
+      query += `date=${this.searchDate}&`;
+    }
+    console.log(query);
+    this.apiService.searchSongs(query).then((songs: Song[]) => {
+      this.songs = songs;
     });
   }
 
