@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Song } from '../models/song.model';
-import { ApiService } from '../services/api.service';
+import { Song } from '../../models/song.model';
+import { ApiService } from '../../services/api.service';
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +15,11 @@ export class HomePage implements OnInit {
   searchArtist: string = '';
   searchDate: string = '';
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private toastController: ToastController
+  ) {}
 
   ngOnInit() {
     this.getAllSongs();
@@ -51,7 +57,11 @@ export class HomePage implements OnInit {
     this.getAllSongs();
   }
 
-  goToLogin() {}
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
 
-  goToRegister() {}
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
 }
