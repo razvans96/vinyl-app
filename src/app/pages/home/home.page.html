@@ -39,6 +39,9 @@
           >Clean filters</ion-button
         >
         <ion-button expand="full" (click)="searchSongs()">Search</ion-button>
+        <ion-button expand="full" *ngIf="isLoggedIn()" (click)="goToAddSong()"
+          >Add Song</ion-button
+        >
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -53,6 +56,9 @@
         <p>{{ song.artist }}</p>
         <p>{{ song.date | date }}</p>
       </ion-label>
+      <ion-button slot="end" (click)="goToSongDetails(song.id)"
+        >Access</ion-button
+      >
     </ion-item>
   </ion-list>
 </ion-content>

@@ -53,32 +53,4 @@ export class ApiService {
     });
     return await response.json();
   }
-
-  //create a function for login and store the token in the local storage
-  async login(username: string, password: string): Promise<any> {
-    let response = await fetch(`${this.apiUrl}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
-    return await response.json();
-  }
-
-  //create a function for register with username, password and name
-  async register(
-    username: string,
-    password: string,
-    name: string
-  ): Promise<any> {
-    let response = await fetch(`${this.apiUrl}/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password, name }),
-    });
-    return await response.json();
-  }
 }

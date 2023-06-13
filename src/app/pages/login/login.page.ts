@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -14,7 +14,7 @@ export class LoginPage implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private apiService: ApiService,
+    private authService: AuthService,
     private router: Router,
     private toastController: ToastController
   ) {}
@@ -32,7 +32,7 @@ export class LoginPage implements OnInit {
       const username = this.loginForm.value.username;
       const password = this.loginForm.value.password;
       // hacer login con el servicio de la API
-      this.apiService.login(username, password).then(response => {
+      this.authService.login(username, password).then(response => {
         console.log(response);
         // guardar el token en el local storage
         localStorage.setItem('token', response.token);

@@ -3,6 +3,7 @@ import { Song } from '../../models/song.model';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ export class HomePage implements OnInit {
 
   constructor(
     private apiService: ApiService,
+    private authService: AuthService,
     private router: Router,
     private toastController: ToastController
   ) {}
@@ -63,5 +65,17 @@ export class HomePage implements OnInit {
 
   goToRegister() {
     this.router.navigate(['/register']);
+  }
+
+  goToAddSong() {
+    this.router.navigate(['/add-song']);
+  }
+
+  goToSongDetails(id: string) {
+    this.router.navigate([`/song-details/${id}`]);
+  }
+
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
   }
 }
