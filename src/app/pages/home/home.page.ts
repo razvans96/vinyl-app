@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Song } from '../../models/song.model';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
-
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -15,16 +13,21 @@ export class HomePage implements OnInit {
   searchTitle: string = '';
   searchArtist: string = '';
   searchDate: string = '';
+  user: string = '';
 
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
-    private router: Router,
-    private toastController: ToastController
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.getAllSongs();
+    this.getUser();
+  }
+
+  ionViewWillEnter() {
+    this.getUser();
   }
 
   getAllSongs() {
@@ -32,6 +35,11 @@ export class HomePage implements OnInit {
       this.songs = songs;
       console.log(this.songs);
     });
+  }
+
+  getUser() {
+    this.user = this.authService.getUser();
+    console.log('USUARIO:' + this.user);
   }
 
   searchSongs() {
@@ -77,5 +85,10 @@ export class HomePage implements OnInit {
 
   isLoggedIn() {
     return this.authService.isLoggedIn();
+  }
+
+  logOut() {
+    localStorage.removeItem('token');
+    window.location.reload();
   }
 }

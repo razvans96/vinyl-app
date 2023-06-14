@@ -36,3 +36,12 @@ jobs:
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}" 
           report-json: "./coverage/eslint-result.json"
+      - name: Build Ionic project
+        run: |
+          ionic build --prod -- --base-href http://webapps.stoia.tech/
+          cd www
+          cp index.html 404.html
+      - uses: actions/upload-artifact@v3
+        with:
+          name: www
+          path: www/

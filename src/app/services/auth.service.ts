@@ -9,6 +9,7 @@ export class AuthService {
   private isAuth: boolean = false;
   //create a variable to store the user id
   private userId: string = '';
+  private user: string = '';
 
   constructor() {}
 
@@ -24,7 +25,8 @@ export class AuthService {
     let data = await response.json();
     if (data.token) {
       localStorage.setItem('token', data.token);
-      this.userId = data.userId;
+      this.userId = data.user.id;
+      this.user = data.user.name;
       this.isAuth = true;
     }
     return data;
@@ -46,7 +48,8 @@ export class AuthService {
     let data = await response.json();
     if (data.token) {
       localStorage.setItem('token', data.token);
-      this.userId = data.userId;
+      this.userId = data.user.id;
+      this.user = data.user.name;
       this.isAuth = true;
     }
     return data;
@@ -59,5 +62,9 @@ export class AuthService {
 
   getUserId() {
     return this.userId;
+  }
+
+  getUser() {
+    return this.user;
   }
 }

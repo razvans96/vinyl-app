@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private toastController: ToastController
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -32,25 +32,34 @@ export class LoginPage implements OnInit {
       const username = this.loginForm.value.username;
       const password = this.loginForm.value.password;
       // hacer login con el servicio de la API
-      this.authService.login(username, password).then(response => {
-        console.log(response);
-        // guardar el token en el local storage
-        localStorage.setItem('token', response.token);
-        //show toast message
-        //redirect to home page
-        this.toastController
-          .create({
-            message: 'Login successful',
-            duration: 2000,
-            color: 'success',
-          })
-          .then(toast => {
-            toast.present();
+      try {
+        this.authService.login(username, password).then(response => {
+          console.log(response);
+          // guardar el token en el local storage
+          if (response.token) {
+            localStorage.setItem('token', response.token);
+            this.toastService.showSuccessToast('Login successful');
             this.router.navigate(['/home']);
-          });
-      });
+          } else {
+            this.toastService.showErrorToast(
+              'Login failed. Check your credentials.'
+            );
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        this.handleLoginError(error);
+      }
     } else {
       console.log('Form error');
     }
+  }
+
+  handleLoginError(error: any) {
+    let errorMessage = 'An error occurred during register.';
+    if (error && error.error && error.error.message) {
+      errorMessage = error.error.message;
+    }
+    this.toastService.showErrorToast(errorMessage);
   }
 }

@@ -2,7 +2,9 @@
   <ion-toolbar>
     <ion-title>Home</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="goToLogin()">Login</ion-button>
+      <ion-button *ngIf="!isLoggedIn()" (click)="goToLogin()">Login</ion-button>
+      <ion-label *ngIf="isLoggedIn()">{{ user }}</ion-label>
+      <ion-button *ngIf="isLoggedIn()" (click)="logOut()">Logout</ion-button>
       <ion-button (click)="goToRegister()">Register</ion-button>
     </ion-buttons>
   </ion-toolbar>
