@@ -7,6 +7,8 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   private apiUrl = environment.apiUrl;
   private isAuth: boolean = false;
+  //create a variable to store the user id
+  private userId: string = '';
 
   constructor() {}
 
@@ -22,6 +24,7 @@ export class AuthService {
     let data = await response.json();
     if (data.token) {
       localStorage.setItem('token', data.token);
+      this.userId = data.userId;
       this.isAuth = true;
     }
     return data;
@@ -43,6 +46,7 @@ export class AuthService {
     let data = await response.json();
     if (data.token) {
       localStorage.setItem('token', data.token);
+      this.userId = data.userId;
       this.isAuth = true;
     }
     return data;
@@ -51,5 +55,9 @@ export class AuthService {
   isLoggedIn() {
     //check if bearer token is in local storage
     return this.isAuth;
+  }
+
+  getUserId() {
+    return this.userId;
   }
 }

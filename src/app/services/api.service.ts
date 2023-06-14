@@ -21,6 +21,16 @@ export class ApiService {
     return await response.json();
   }
 
+  async getSong(id: string): Promise<Song> {
+    let response = await fetch(`${this.apiUrl}/song/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
+  }
+
   async searchSongs(query: string): Promise<Song[]> {
     let response = await fetch(`${this.apiUrl}/song/search${query}`, {
       method: 'GET',

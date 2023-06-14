@@ -56,7 +56,7 @@
         <p>{{ song.artist }}</p>
         <p>{{ song.date | date }}</p>
       </ion-label>
-      <ion-button slot="end" (click)="goToSongDetails(song.id)"
+      <ion-button slot="end" (click)="goToSongDetails(song._id)"
         >Access</ion-button
       >
     </ion-item>

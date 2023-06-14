@@ -72,7 +72,7 @@ export class HomePage implements OnInit {
   }
 
   goToSongDetails(id: string) {
-    this.router.navigate([`/song-details/${id}`]);
+    this.router.navigate([`/song/${id}`]);
   }
 
   isLoggedIn() {

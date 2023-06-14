@@ -24,6 +24,13 @@ const routes: Routes = [
         m => m.RegisterPageModule
       ),
   },
+  {
+    path: 'song/:id',
+    loadChildren: () =>
+      import('./pages/song-details/song-details.module').then(
+        m => m.SongDetailsPageModule
+      ),
+  },
 ];
 
 @NgModule({
