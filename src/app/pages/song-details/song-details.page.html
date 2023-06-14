@@ -1,5 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      <ion-button (click)="navigateHome()">
+        <ion-icon name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="isLoggedIn()">
+      <ion-button (click)="deleteSong()">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>song-details</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -23,5 +34,14 @@
         <p>{{ song.duration }} seconds</p>
       </ion-card-content>
     </ion-card>
+    <ion-list>
+      <ion-item *ngFor="let comment of comments">
+        <ion-label>
+          <h2>{{ comment.author }}</h2>
+          <p>{{ comment.comment }}</p>
+          <p>{{ comment.rating }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>

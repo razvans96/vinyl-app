@@ -30,7 +30,11 @@ const routes: Routes = [
       import('./pages/song-details/song-details.module').then(
         m => m.SongDetailsPageModule
       ),
+  },  {
+    path: 'add-song',
+    loadChildren: () => import('./pages/add-song/add-song.module').then( m => m.AddSongPageModule)
   },
+
 ];
 
 @NgModule({

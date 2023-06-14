@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Song } from '../models/song.model';
+import { Comment } from '../models/comment.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -18,6 +19,20 @@ export class ApiService {
         'Content-Type': 'application/json',
       },
     });
+    return await response.json();
+  }
+
+  async searchSpotifySongs(query: string): Promise<Song[]> {
+    let response = await fetch(
+      `${this.apiUrl}/song/search/spotifySearch${query}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+        },
+      }
+    );
     return await response.json();
   }
 
@@ -53,12 +68,22 @@ export class ApiService {
     return await response.json();
   }
 
-  async deleteSong(id: number): Promise<Song> {
+  async deleteSong(id: string): Promise<Song> {
     let response = await fetch(`${this.apiUrl}/song/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('token'),
+      },
+    });
+    return await response.json();
+  }
+
+  async getComments(songId: string): Promise<Comment[]> {
+    let response = await fetch(`${this.apiUrl}/song/${songId}/comment`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
       },
     });
     return await response.json();

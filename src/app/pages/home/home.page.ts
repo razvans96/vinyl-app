@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HomePage implements OnInit {
   songs: Song[] = []; // Array to store the list of songs
+  spotifySongs: Song[] = []; // Array to store the list of songs
   searchTitle: string = '';
   searchArtist: string = '';
   searchDate: string = '';
@@ -60,6 +61,22 @@ export class HomePage implements OnInit {
     });
   }
 
+  searchSpotifySongs() {
+    let query = '?';
+    if (this.searchTitle != '') {
+      query += `title=${this.searchTitle}&`;
+    }
+    if (this.searchArtist != '') {
+      query += `artist=${this.searchArtist}&`;
+    }
+    if (this.searchDate != '') {
+      query += `date=${this.searchDate}&`;
+    }
+    console.log(query);
+    this.apiService.searchSpotifySongs(query).then((songs: Song[]) => {
+      this.spotifySongs = songs;
+    });
+  }
   cleanFilters() {
     this.searchTitle = '';
     this.searchArtist = '';
