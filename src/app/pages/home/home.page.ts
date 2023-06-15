@@ -15,6 +15,8 @@ export class HomePage implements OnInit {
   searchArtist: string = '';
   searchDate: string = '';
   user: string = '';
+  searchExec: boolean = false;
+  showSpotify: boolean = false;
 
   constructor(
     private apiService: ApiService,
@@ -29,6 +31,9 @@ export class HomePage implements OnInit {
 
   ionViewWillEnter() {
     this.getUser();
+    this.cleanFilters();
+    this.searchExec = false;
+    this.showSpotify = false;
   }
 
   getAllSongs() {
@@ -41,6 +46,23 @@ export class HomePage implements OnInit {
   getUser() {
     this.user = this.authService.getUser();
     console.log('USUARIO:' + this.user);
+  }
+
+  search() {
+    this.searchSongs();
+    this.searchExec = true;
+    this.checkSpotifySearch();
+    if (this.showSpotify) {
+      this.searchSpotifySongs();
+    }
+  }
+
+  checkSpotifySearch() {
+    if (this.isLoggedIn() && this.searchExec) {
+      this.showSpotify = true;
+    } else {
+      this.showSpotify = false;
+    }
   }
 
   searchSongs() {
@@ -58,29 +80,34 @@ export class HomePage implements OnInit {
     console.log(query);
     this.apiService.searchSongs(query).then((songs: Song[]) => {
       this.songs = songs;
+      console.log(this.songs);
     });
   }
 
   searchSpotifySongs() {
-    let query = '?';
+    let query = '?q=';
     if (this.searchTitle != '') {
-      query += `title=${this.searchTitle}&`;
+      query += `title:${this.searchTitle} `;
     }
     if (this.searchArtist != '') {
-      query += `artist=${this.searchArtist}&`;
+      query += `author:${this.searchArtist} `;
     }
     if (this.searchDate != '') {
-      query += `date=${this.searchDate}&`;
+      // add the year from date to the query
+      query += `year:${this.searchDate.substring(0, 4)} `;
     }
     console.log(query);
     this.apiService.searchSpotifySongs(query).then((songs: Song[]) => {
       this.spotifySongs = songs;
+      console.log(this.spotifySongs);
     });
   }
   cleanFilters() {
     this.searchTitle = '';
     this.searchArtist = '';
     this.searchDate = '';
+    this.searchExec = false;
+    this.showSpotify = false;
     this.getAllSongs();
   }
 

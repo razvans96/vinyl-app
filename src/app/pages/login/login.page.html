@@ -3,25 +3,34 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">login</ion-title>
     </ion-toolbar>
   </ion-header>
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <ion-item>
-      <ion-label position="floating">Username</ion-label>
-      <ion-input type="username" formControlName="username"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input>
-    </ion-item>
-    <ion-button type="submit" [disabled]="!loginForm.valid">Login</ion-button>
-  </form>
+  <div class="form-box">
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="login()">
+      <span class="title">Sign in</span>
+      <span class="subtitle">Login with your username and password</span>
+      <ion-item>
+        <ion-input
+          class="input"
+          type="username"
+          formControlName="username"
+          placeholder="Username"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          class="input"
+          type="password"
+          formControlName="password"
+          placeholder="Password"></ion-input>
+      </ion-item>
+      <ion-button type="submit" [disabled]="!loginForm.valid">Login</ion-button>
+    </form>
+  </div>
 </ion-content>

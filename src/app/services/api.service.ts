@@ -23,16 +23,14 @@ export class ApiService {
   }
 
   async searchSpotifySongs(query: string): Promise<Song[]> {
-    let response = await fetch(
-      `${this.apiUrl}/song/search/spotifySearch${query}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('token'),
-        },
-      }
-    );
+    let response = await fetch(`${this.apiUrl}/spotifySearch${query}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+      },
+    });
+    // return element songs from response
     return await response.json();
   }
 
@@ -47,7 +45,7 @@ export class ApiService {
   }
 
   async searchSongs(query: string): Promise<Song[]> {
-    let response = await fetch(`${this.apiUrl}/song/search${query}`, {
+    let response = await fetch(`${this.apiUrl}/song${query}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

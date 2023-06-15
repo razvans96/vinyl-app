@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-title>Home</ion-title>
     <ion-buttons slot="end">
@@ -40,7 +40,7 @@
         <ion-button expand="full" (click)="cleanFilters()"
           >Clean filters</ion-button
         >
-        <ion-button expand="full" (click)="searchSongs()">Search</ion-button>
+        <ion-button expand="full" (click)="search()">Search</ion-button>
         <ion-button expand="full" *ngIf="isLoggedIn()" (click)="goToAddSong()"
           >Add Song</ion-button
         >
@@ -61,6 +61,24 @@
       <ion-button slot="end" (click)="goToSongDetails(song._id)"
         >Access</ion-button
       >
+    </ion-item>
+  </ion-list>
+  <ion-header *ngIf="this.showSpotify">
+    <ion-toolbar>
+      <ion-title>Spotify Songs</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-list *ngIf="this.showSpotify">
+    <ion-item *ngFor="let song of spotifySongs">
+      <ion-thumbnail slot="start">
+        <img [src]="song.photo" alt="Song Photo" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ song.title }}</h2>
+        <p>{{ song.artist }}</p>
+        <p>{{ song.date | date }}</p>
+      </ion-label>
+      <ion-button slot="end">Add</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
