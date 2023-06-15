@@ -30,11 +30,19 @@ const routes: Routes = [
       import('./pages/song-details/song-details.module').then(
         m => m.SongDetailsPageModule
       ),
-  },  {
-    path: 'add-song',
-    loadChildren: () => import('./pages/add-song/add-song.module').then( m => m.AddSongPageModule)
   },
-
+  {
+    path: 'add-song',
+    loadChildren: () =>
+      import('./pages/add-song/add-song.module').then(m => m.AddSongPageModule),
+  },
+  {
+    path: 'add-comment/:id',
+    loadChildren: () =>
+      import('./pages/add-comment/add-comment.module').then(
+        m => m.AddCommentPageModule
+      ),
+  },
 ];
 
 @NgModule({

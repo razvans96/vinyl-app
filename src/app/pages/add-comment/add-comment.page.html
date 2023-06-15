@@ -1,0 +1,48 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-row>
+    <ion-col size-md="6" offset-md="3">
+      <div class="form-box">
+        <form class="form" [formGroup]="commentForm" (ngSubmit)="addComment()">
+          <span class="title">Add comment</span>
+          <ion-item>
+            <ion-input
+              class="input"
+              placeholder="Author"
+              type="text"
+              formControlName="author"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-textarea
+              class="input"
+              placeholder="Comment"
+              type="text"
+              formControlName="comment"></ion-textarea>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Rating</ion-label>
+            <ion-range
+              [pin]="true"
+              snaps="true"
+              step="1"
+              ticks="true"
+              min="0"
+              max="5"
+              formControlName="rating"></ion-range>
+          </ion-item>
+          <ion-button type="submit" [disabled]="!commentForm.valid"
+            >Submit</ion-button
+          >
+        </form>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-content>

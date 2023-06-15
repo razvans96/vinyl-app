@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'app',
+  appId: 'com.dah.vinyl',
+  appName: 'vinyl',
   webDir: 'www',
   server: {
     androidScheme: 'https'

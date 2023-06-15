@@ -18,7 +18,6 @@ export class SongDetailsPage implements OnInit {
     artist: '',
     date: new Date(),
     photo: '',
-    duration: 0,
     location: {
       latitude: 0,
       longitude: 0,
@@ -65,13 +64,20 @@ export class SongDetailsPage implements OnInit {
   }
 
   deleteSong() {
-    this.apiService.deleteSong(this.song._id).then((song: Song) => {
-      console.log(song);
-      this.navigateHome();
-    });
+    //ask confirmation before deleting song
+    if (window.confirm('Are you sure you want to delete the song?')) {
+      this.apiService.deleteSong(this.song._id).then((song: Song) => {
+        console.log(song);
+        this.router.navigate(['/home']);
+      });
+    }
   }
 
   isLoggedIn() {
     return this.authService.isLoggedIn();
+  }
+
+  goToAddComment() {
+    this.router.navigate(['/add-comment', this.song._id]);
   }
 }

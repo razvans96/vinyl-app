@@ -3,6 +3,8 @@ import { Song } from '../../models/song.model';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { Geolocation } from '@capacitor/geolocation';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -14,9 +16,11 @@ export class HomePage implements OnInit {
   searchTitle: string = '';
   searchArtist: string = '';
   searchDate: string = '';
-  user: string = '';
   searchExec: boolean = false;
   showSpotify: boolean = false;
+  latitude: number | undefined;
+  longitude: number | undefined;
+  accuracy: number | undefined;
 
   constructor(
     private apiService: ApiService,
@@ -26,11 +30,10 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.getAllSongs();
-    this.getUser();
   }
 
   ionViewWillEnter() {
-    this.getUser();
+    this.getLocation();
     this.cleanFilters();
     this.searchExec = false;
     this.showSpotify = false;
@@ -41,11 +44,6 @@ export class HomePage implements OnInit {
       this.songs = songs;
       console.log(this.songs);
     });
-  }
-
-  getUser() {
-    this.user = this.authService.getUser();
-    console.log('USUARIO:' + this.user);
   }
 
   search() {
@@ -87,10 +85,10 @@ export class HomePage implements OnInit {
   searchSpotifySongs() {
     let query = '?q=';
     if (this.searchTitle != '') {
-      query += `title:${this.searchTitle} `;
+      query += `track:${this.searchTitle} `;
     }
     if (this.searchArtist != '') {
-      query += `author:${this.searchArtist} `;
+      query += `artist:${this.searchArtist} `;
     }
     if (this.searchDate != '') {
       // add the year from date to the query
@@ -111,14 +109,9 @@ export class HomePage implements OnInit {
     this.getAllSongs();
   }
 
-  goToLogin() {
-    this.router.navigate(['/login']);
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
   }
-
-  goToRegister() {
-    this.router.navigate(['/register']);
-  }
-
   goToAddSong() {
     this.router.navigate(['/add-song']);
   }
@@ -126,13 +119,29 @@ export class HomePage implements OnInit {
   goToSongDetails(id: string) {
     this.router.navigate([`/song/${id}`]);
   }
-
-  isLoggedIn() {
-    return this.authService.isLoggedIn();
+  addSong(song: Song) {
+    console.log('New song:', song);
+    song.user = this.authService.getUserId();
+    song.location = Object.create(null);
+    song.location.latitude = this.latitude;
+    song.location.longitude = this.longitude;
+    song.location.accuracy = this.accuracy;
+    this.apiService.postSong(song).then((song: Song) => {
+      console.log('New song', song);
+      this.search();
+    });
   }
 
-  logOut() {
-    localStorage.removeItem('token');
-    window.location.reload();
+  async getLocation() {
+    const coordinates = await Geolocation.getCurrentPosition();
+    this.latitude = coordinates.coords.latitude;
+    this.longitude = coordinates.coords.longitude;
+    this.accuracy = coordinates.coords.accuracy;
+    console.log(
+      'Current position:',
+      this.latitude,
+      this.longitude,
+      this.accuracy
+    );
   }
 }

@@ -86,4 +86,17 @@ export class ApiService {
     });
     return await response.json();
   }
+
+  async postComment(comment: Comment): Promise<Comment> {
+    // get song id from comment
+    const songId = comment.song;
+    let response = await fetch(`${this.apiUrl}/song/${songId}/comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(comment),
+    });
+    return await response.json();
+  }
 }

@@ -1,7 +1,6 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
       <ion-button (click)="navigateHome()">
         <ion-icon name="home"></ion-icon>
       </ion-button>
@@ -11,7 +10,6 @@
         <ion-icon name="trash"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>song-details</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -31,7 +29,6 @@
 
       <ion-card-content>
         <p>{{ song.date | date }}</p>
-        <p>{{ song.duration }} seconds</p>
       </ion-card-content>
     </ion-card>
     <ion-list>
@@ -43,5 +40,8 @@
         </ion-label>
       </ion-item>
     </ion-list>
+    <ion-button *ngIf="isLoggedIn()" (click)="goToAddComment()"
+      >Add Comment</ion-button
+    >
   </div>
 </ion-content>

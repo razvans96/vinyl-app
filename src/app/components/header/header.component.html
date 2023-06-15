@@ -1,3 +1,25 @@
-<p>
-  header works!
-</p>
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-avatar class="logo-avatar">
+          <img
+            src="https://static.vecteezy.com/system/resources/previews/004/820/423/original/vinyl-recorder-with-sound-wave-effect-inside-free-vector.jpg" />
+        </ion-avatar>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="!isLoggedIn()" (click)="goToLogin()">
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        Login
+      </ion-button>
+      <ion-button *ngIf="isLoggedIn()" (click)="logOut()">
+        <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+        Logout
+      </ion-button>
+      <ion-button (click)="goToRegister()" fill="outline">
+        Register
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
