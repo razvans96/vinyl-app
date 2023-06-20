@@ -46,6 +46,15 @@ export class HomePage implements OnInit {
     });
   }
 
+  convertFromBase64(base64: string): Promise<Blob> {
+    return fetch(base64)
+      .then(res => res.blob())
+      .catch(err => {
+        console.error('Error converting from base64:', err);
+        return Promise.reject(err);
+      });
+  }
+
   search() {
     this.searchSongs();
     this.searchExec = true;

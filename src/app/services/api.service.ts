@@ -22,6 +22,16 @@ export class ApiService {
     return await response.json();
   }
 
+  async searchSongs(query: string): Promise<Song[]> {
+    let response = await fetch(`${this.apiUrl}/song${query}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
+  }
+
   async searchSpotifySongs(query: string): Promise<Song[]> {
     let response = await fetch(`${this.apiUrl}/spotifySearch${query}`, {
       method: 'GET',
@@ -36,16 +46,6 @@ export class ApiService {
 
   async getSong(id: string): Promise<Song> {
     let response = await fetch(`${this.apiUrl}/song/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return await response.json();
-  }
-
-  async searchSongs(query: string): Promise<Song[]> {
-    let response = await fetch(`${this.apiUrl}/song${query}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -97,6 +97,20 @@ export class ApiService {
       },
       body: JSON.stringify(comment),
     });
+    return await response.json();
+  }
+
+  async deleteComment(comment: Comment): Promise<Comment> {
+    let response = await fetch(
+      `${this.apiUrl}/song/${comment.song}/comment/${comment._id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+        },
+      }
+    );
     return await response.json();
   }
 }

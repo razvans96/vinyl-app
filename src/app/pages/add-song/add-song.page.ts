@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Geolocation } from '@capacitor/geolocation';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-song',
@@ -18,6 +20,7 @@ export class AddSongPage implements OnInit {
     artist: '',
     date: new Date(),
     photo: '',
+    photobase64: '',
     location: {
       latitude: 0,
       longitude: 0,
@@ -31,13 +34,17 @@ export class AddSongPage implements OnInit {
   private longitude: number = 0;
   private accuracy: number = 0;
 
+  //create attribute photo to store the photo in base64
+  private photo: string = '';
+
   songForm!: FormGroup;
 
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
@@ -46,7 +53,6 @@ export class AddSongPage implements OnInit {
       title: ['', Validators.required],
       artist: ['', Validators.required],
       date: ['', Validators.required],
-      photo: ['', Validators.required],
     });
   }
 
@@ -67,6 +73,7 @@ export class AddSongPage implements OnInit {
         artist: this.songForm.value.artist,
         date: this.songForm.value.date,
         photo: this.songForm.value.photo,
+        photobase64: this.photo,
         location: {
           latitude: this.latitude,
           longitude: this.longitude,
@@ -86,6 +93,34 @@ export class AddSongPage implements OnInit {
     }
   }
 
+  async takePhoto() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri,
+    });
+
+    if (image) {
+      this.readAsBase64(image);
+    }
+  }
+
+  async readAsBase64(cameraPhoto: any) {
+    const response = await fetch(cameraPhoto.webPath!);
+    const blob = await response.blob();
+    this.photo = (await this.convertBlobToBase64(blob)) as string;
+  }
+
+  convertBlobToBase64 = (blob: Blob) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    });
+
   async getCurrentPosition() {
     const coordinates = await Geolocation.getCurrentPosition();
     this.latitude = coordinates.coords.latitude;
@@ -94,5 +129,9 @@ export class AddSongPage implements OnInit {
     console.log('LATITUD: ' + this.latitude);
     console.log('LONGITUD: ' + this.longitude);
     console.log('PRECISIÓN: ' + this.accuracy);
+  }
+
+  isPhotoEmpty() {
+    return this.photo === '';
   }
 }

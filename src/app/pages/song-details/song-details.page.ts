@@ -18,6 +18,7 @@ export class SongDetailsPage implements OnInit {
     artist: '',
     date: new Date(),
     photo: '',
+    photobase64: '',
     location: {
       latitude: 0,
       longitude: 0,
@@ -79,5 +80,14 @@ export class SongDetailsPage implements OnInit {
 
   goToAddComment() {
     this.router.navigate(['/add-comment', this.song._id]);
+  }
+
+  deleteComment(comment: Comment) {
+    if (window.confirm('Are you sure you want to delete the comment?')) {
+      this.apiService.deleteComment(comment).then((comment: Comment) => {
+        console.log(comment);
+        this.getComments();
+      });
+    }
   }
 }

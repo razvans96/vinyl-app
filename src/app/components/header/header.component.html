@@ -9,6 +9,7 @@
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
+      <label *ngIf="isLoggedIn()">{{ this.user }}</label>
       <ion-button *ngIf="!isLoggedIn()" (click)="goToLogin()">
         <ion-icon slot="start" name="person-outline"></ion-icon>
         Login
@@ -17,7 +18,7 @@
         <ion-icon slot="start" name="person-circle-outline"></ion-icon>
         Logout
       </ion-button>
-      <ion-button (click)="goToRegister()" fill="outline">
+      <ion-button *ngIf="!isLoggedIn()" (click)="goToRegister()" fill="outline">
         Register
       </ion-button>
     </ion-buttons>

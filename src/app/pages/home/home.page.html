@@ -43,7 +43,9 @@
       <ion-list>
         <ion-item *ngFor="let song of songs">
           <ion-thumbnail slot="start">
-            <img [src]="song.photo" alt="Song Photo" />
+            <img
+              [src]="song.photo ? song.photo : song.photobase64"
+              alt="Song Photo" />
           </ion-thumbnail>
           <ion-label>
             <h2>{{ song.title }}</h2>

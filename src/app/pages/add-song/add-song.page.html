@@ -36,11 +36,18 @@
           </ion-item>
           <ion-item>
             <ion-input
+              *ngIf="isPhotoEmpty()"
               class="input"
               placeholder="Photo URL"
-              type="text"
-              formControlName="photo"></ion-input>
+              type="text">
+            </ion-input>
+            <ion-button slot="end" fill="clear" (click)="takePhoto()">
+              <ion-icon name="camera"></ion-icon>
+            </ion-button>
           </ion-item>
+          <span color="success" *ngIf="!isPhotoEmpty()"
+            >Se ha tomado la foto correctamente</span
+          >
           <ion-button type="submit" [disabled]="!songForm.valid"
             >Submit</ion-button
           >

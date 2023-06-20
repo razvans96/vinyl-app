@@ -4,6 +4,7 @@ export interface Song {
   artist: string;
   date: Date;
   photo: string;
+  photobase64: string;
   location: {
     latitude: number | undefined;
     longitude: number | undefined;
