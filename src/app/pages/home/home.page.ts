@@ -4,6 +4,7 @@ import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Geolocation } from '@capacitor/geolocation';
+import { Capacitor, Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-home',
@@ -142,8 +143,9 @@ export class HomePage implements OnInit {
   }
 
   async getLocation() {
-    //const permissionResult = await Geolocation.requestPermissions();
-    if (navigator.geolocation) {
+    if (Capacitor.isNativePlatform()) {
+      // Estamos en una aplicación móvil
+
       const coordinates = await Geolocation.getCurrentPosition();
       this.latitude = coordinates.coords.latitude;
       this.longitude = coordinates.coords.longitude;
@@ -155,7 +157,27 @@ export class HomePage implements OnInit {
         this.accuracy
       );
     } else {
-      console.log('Permission denied');
+      // Estamos en un navegador
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            this.latitude = position.coords.latitude;
+            this.longitude = position.coords.longitude;
+            this.accuracy = position.coords.accuracy;
+            console.log(
+              'Current position:',
+              this.latitude,
+              this.longitude,
+              this.accuracy
+            );
+          },
+          error => {
+            console.log('Error getting location:', error);
+          }
+        );
+      } else {
+        console.log('Geolocation is not supported by this browser.');
+      }
     }
   }
 }

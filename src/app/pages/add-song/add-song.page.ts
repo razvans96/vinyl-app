@@ -7,6 +7,7 @@ import { Geolocation } from '@capacitor/geolocation';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Capacitor, Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-add-song',
@@ -53,6 +54,7 @@ export class AddSongPage implements OnInit {
       title: ['', Validators.required],
       artist: ['', Validators.required],
       date: ['', Validators.required],
+      photo: [],
     });
   }
 
@@ -122,16 +124,41 @@ export class AddSongPage implements OnInit {
     });
 
   async getCurrentPosition() {
-    if (navigator.geolocation) {
+    if (Capacitor.isNativePlatform()) {
+      // Estamos en una aplicación móvil
+
       const coordinates = await Geolocation.getCurrentPosition();
       this.latitude = coordinates.coords.latitude;
       this.longitude = coordinates.coords.longitude;
       this.accuracy = coordinates.coords.accuracy;
-      console.log('LATITUD: ' + this.latitude);
-      console.log('LONGITUD: ' + this.longitude);
-      console.log('PRECISIÓN: ' + this.accuracy);
+      console.log(
+        'Current position:',
+        this.latitude,
+        this.longitude,
+        this.accuracy
+      );
     } else {
-      console.log('No geolocation available');
+      // Estamos en un navegador
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            this.latitude = position.coords.latitude;
+            this.longitude = position.coords.longitude;
+            this.accuracy = position.coords.accuracy;
+            console.log(
+              'Current position:',
+              this.latitude,
+              this.longitude,
+              this.accuracy
+            );
+          },
+          error => {
+            console.log('Error getting location:', error);
+          }
+        );
+      } else {
+        console.log('Geolocation is not supported by this browser.');
+      }
     }
   }
 

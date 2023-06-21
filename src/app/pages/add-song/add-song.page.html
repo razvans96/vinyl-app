@@ -39,7 +39,8 @@
               *ngIf="isPhotoEmpty()"
               class="input"
               placeholder="Photo URL"
-              type="text">
+              type="text"
+              formControlName="photo">
             </ion-input>
             <ion-button slot="end" fill="clear" (click)="takePhoto()">
               <ion-icon name="camera"></ion-icon>
