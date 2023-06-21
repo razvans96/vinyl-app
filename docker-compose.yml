@@ -1,0 +1,8 @@
+version: '3'
+services:
+  vinyl-app:
+    image: gcr.io/cnsa2022-rs727/vinyl-app:latest
+    container_name: vinyl-app
+    ports:
+      - 80:80
+    restart: unless-stopped
