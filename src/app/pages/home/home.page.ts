@@ -142,15 +142,20 @@ export class HomePage implements OnInit {
   }
 
   async getLocation() {
-    const coordinates = await Geolocation.getCurrentPosition();
-    this.latitude = coordinates.coords.latitude;
-    this.longitude = coordinates.coords.longitude;
-    this.accuracy = coordinates.coords.accuracy;
-    console.log(
-      'Current position:',
-      this.latitude,
-      this.longitude,
-      this.accuracy
-    );
+    //const permissionResult = await Geolocation.requestPermissions();
+    if (navigator.geolocation) {
+      const coordinates = await Geolocation.getCurrentPosition();
+      this.latitude = coordinates.coords.latitude;
+      this.longitude = coordinates.coords.longitude;
+      this.accuracy = coordinates.coords.accuracy;
+      console.log(
+        'Current position:',
+        this.latitude,
+        this.longitude,
+        this.accuracy
+      );
+    } else {
+      console.log('Permission denied');
+    }
   }
 }

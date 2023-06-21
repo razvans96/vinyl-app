@@ -122,13 +122,17 @@ export class AddSongPage implements OnInit {
     });
 
   async getCurrentPosition() {
-    const coordinates = await Geolocation.getCurrentPosition();
-    this.latitude = coordinates.coords.latitude;
-    this.longitude = coordinates.coords.longitude;
-    this.accuracy = coordinates.coords.accuracy;
-    console.log('LATITUD: ' + this.latitude);
-    console.log('LONGITUD: ' + this.longitude);
-    console.log('PRECISIÓN: ' + this.accuracy);
+    if (navigator.geolocation) {
+      const coordinates = await Geolocation.getCurrentPosition();
+      this.latitude = coordinates.coords.latitude;
+      this.longitude = coordinates.coords.longitude;
+      this.accuracy = coordinates.coords.accuracy;
+      console.log('LATITUD: ' + this.latitude);
+      console.log('LONGITUD: ' + this.longitude);
+      console.log('PRECISIÓN: ' + this.accuracy);
+    } else {
+      console.log('No geolocation available');
+    }
   }
 
   isPhotoEmpty() {
