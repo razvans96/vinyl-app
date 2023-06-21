@@ -66,7 +66,7 @@ jobs:
           dockerfile: Dockerfile
           context: ./
 
-  deploy-front:
+  deploy-frontend:
     needs: [build-and-push-gcr-frontend]
     runs-on: ubuntu-latest
     name: Deploy to Server
@@ -80,11 +80,11 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - name: Deploy to server
         run: |
-            ssh ubuntu@${{ secrets.SSH_HOST }} "if [ ! -d 'vinyl-app' ]; then \
+            ssh vinyl@${{ secrets.SSH_HOST }} "if [ ! -d 'vinyl-app' ]; then \
                 git clone https://github.com/razvans96/vinyl-app.git; \
               else \
                 cd vinyl-app && git stash && git fetch --all && git reset --hard origin/main && git pull origin main; \
               fi"
-            ssh ubuntu@${{ secrets.SSH_HOST }} "cd vinyl-app && docker-compose pull && docker-compose up -d --remove-orphans && yes | docker image prune"
+            ssh vinyl@${{ secrets.SSH_HOST }} "cd vinyl-app && docker-compose pull && docker-compose up -d --remove-orphans && yes | docker image prune"
         continue-on-error: true
     
